@@ -1,1 +1,1 @@
-worker: python chrong_bot.py
+worker: python chrong.py
