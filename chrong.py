@@ -1,12 +1,16 @@
-from discord.ext import commands
-import time
 import asyncio
-import os
 import requests
 import discord
+from bs4 import BeautifulSoup
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
+
+
+async def timer(message, sleeping_time, note):
+    await asyncio.sleep(sleeping_time*60)
+    mention = message.author.mention
+    await message.channel.send(f'{mention}님, 타이머가 종료되었습니다.\n[ {note} ]')
 
 
 class Select(discord.ui.Select):
@@ -194,27 +198,6 @@ class SelectView(discord.ui.View):
         self.add_item(Select())
 
 
-async def PartyQuestTimer(message, msg):
-    mention = message.author.mention
-    for i in range(90, 0, -1):
-        await msg.edit(content=f"파티퀘스트 맵 리셋 타이머 작동이 시작되었습니다. ({i})")
-        await asyncio.sleep(1.0)
-    await msg.delete()
-    await message.channel.send(f"{mention} 파티퀘스트 맵이 리셋되었습니다.")
-
-
-# async def QuestionButton(message):
-#     await message.send(
-#         "Hello, World!",
-#         components=[
-#             Button(label="WOW button!", custom_id="button1")
-#         ]
-#     )
-
-#     interaction = await bot.wait_for("button_click", check=lambda i: i.custom_id == "button1")
-#     await interaction.send(content="Button clicked!")
-
-
 @client.event
 async def on_ready():
 
@@ -228,6 +211,8 @@ async def on_message(message):
         return None
 
     elif message.content == "!서버정보":
+
+        print(f"log.{message.content}")
 
         url = "https://mcapi.us/server/status?ip=chronos.skhidc.kr&port=25565"
         data = requests.get(url).json()
@@ -251,25 +236,37 @@ async def on_message(message):
 
     elif message.content == "!지도":
 
+        print(f"log.{message.content}")
+
         await message.channel.send('http://chronosmap.skhidc.kr/')
 
     elif message.content == "!카페":
+
+        print(f"log.{message.content}")
 
         await message.channel.send('https://cafe.naver.com/minepictures')
 
     elif message.content == "!디스코드":
 
+        print(f"log.{message.content}")
+
         await message.channel.send('https://discord.gg/f6zYFyP3VP')
 
     elif message.content == "!후원":
+
+        print(f"log.{message.content}")
 
         await message.channel.send('https://skhcs.com/chronos')
 
     elif message.content == "!리소스팩":
 
+        print(f"log.{message.content}")
+
         await message.channel.send('기본적으로 서버 접속 시 자동으로 리소스팩이 적용됩니다.\n\n서버 접속 시 정상적으로 적용되시는 분들은 수동 적용할 필요가 없습니다.\n\n무선인터넷 등 인터넷 환경이 좋지 않을 경우 자동 접속 중 튕길 수 있습니다.\n서버에 접속 중 리소스팩을 정상적으로 받지 못해 튕기시는 분은\n\n" AppData\Roaming.minecraft\server-resource-packs " 경로의 파일을 모두 지운 후\n\n같은 경로에 아래 파일을 그대로 넣은 후 서버에 다시 접속하시면 됩니다.\nhttp://tx-cdn.skhidc.kr:1205/SUDRA/3200bb9bcf4d27b09d7554f41075c35b44055588\n파일명이나 확장자를 절대 변경하지 말고 그대로 server-resource-packs 폴더에 넣어주세요.')
 
     elif message.content == "!직업설명":
+
+        print(f"log.{message.content}")
 
         embed = discord.Embed(title='직업설명', color=0x00ff56)
 
@@ -286,6 +283,8 @@ async def on_message(message):
 
     elif message.content == "!규칙":
 
+        print(f"log.{message.content}")
+
         embed = discord.Embed(title='규칙', color=0x00ff56)
 
         embed.add_field(
@@ -299,16 +298,158 @@ async def on_message(message):
 
         await message.channel.send(embed=embed)
 
-    elif message.content == "!파퀘 타이머":
+    elif str(message.content).startswith("!타이머"):
 
-        msg = await message.channel.send('파티퀘스트 맵 리셋 타이머 작동이 시작되었습니다. (90)')
-        await PartyQuestTimer(message, msg)
+        print(f"log.{message.content}")
+
+        try:
+            msg = str(message.content).split()
+            sleeping_time = int(msg[1])
+            note = " ".join(msg[2:])
+        except:
+            await message.channel.send('!타이머 <시간(분)> <메모>')
+        else:
+            await message.channel.send(f'타이머가 시작되었습니다. ( {str(sleeping_time)}분 )\n[ {note} ]')
+            await timer(message, sleeping_time, note)
 
     elif message.content == "!질문":
 
+        print(f"log.{message.content}")
+
         await message.channel.send("자주 묻는 질문", view=SelectView())
 
+    elif str(message.content).startswith("!랭킹"):
+
+        print(f"log.{message.content}")
+
+        msg = str(message.content).split()
+        try:
+            job = msg[1]
+        except:
+            await message.channel.send("!랭킹 <직업> <페이지>")
+        else:
+            try:
+                page = int(msg[2])
+            except:
+                await message.channel.send("!랭킹 <직업> <페이지(1, 2)>")
+            else:
+                if job == "로드나이트":
+                    url_job = "val_1"
+                elif job == "로드워리어":
+                    url_job = "val_2"
+                elif job == "다크디발러":
+                    url_job = "fau_1"
+                elif job == "라이트가디언":
+                    url_job = "fau_2"
+                elif job == "버서커블레이드":
+                    url_job = "ass_1"
+                elif job == "쉐도우워커":
+                    url_job = "ass_2"
+                elif job == "프로슈터":
+                    url_job = "trb_1"
+                elif job == "샤프슈터":
+                    url_job = "trb_2"
+                url = f"http://chronosrank.skhidc.kr/ranking.php?job={url_job}"
+
+                response = requests.get(url)
+                html = response.text
+                soup = BeautifulSoup(html, 'html.parser')
+                # print(soup)
+
+                gray = soup.select("td.gray")
+                white = soup.select("td.white")
+
+                gray_list = []
+                for i in range(0, len(gray), 4):
+                    gray_list.append(
+                        [gray[i].get_text().replace(" ", ""), gray[i+1].get_text().replace(" ", ""), gray[i+2].get_text().replace(" ", ""), gray[i+3].get_text().replace(" ", "")])
+
+                white_list = []
+                for i in range(0, len(white), 4):
+                    white_list.append([white[i].get_text(
+                    ).replace(" ", ""), white[i+1].get_text().replace(" ", ""), white[i+2].get_text().replace(" ", ""), white[i+3].get_text().replace(" ", "")])
+
+                rank_list = []
+                for i in range(10):
+                    rank_list.append(gray_list[i])
+                    rank_list.append(white_list[i])
+
+                embed = discord.Embed(title=f'{job}랭킹', color=0x00ff56)
+
+                if 0 <= page*10 <= len(rank_list):
+                    for i in range((page-1)*10, page*10):
+                        embed.add_field(
+                            name=f"{i+1}위", value=f"닉네임: {rank_list[i][0]},  레벨: {rank_list[i][1].replace('Lv.', '')},  점수: {rank_list[i][2]}점", inline=False)
+
+                await message.channel.send(embed=embed)
+
+    elif str(message.content).startswith("!길드랭킹"):
+
+        print(f"log.{message.content}")
+
+        msg = str(message.content).split()
+        try:
+            page = int(msg[1])
+        except:
+            await message.channel.send("!길드랭킹 <페이지>")
+        else:
+
+            url = "http://chronosrank.skhidc.kr/guild.php"
+
+            response = requests.get(url)
+            html = response.text
+            soup = BeautifulSoup(html, 'html.parser')
+            # print(soup)
+
+            gray = soup.select("td.gray")
+            white = soup.select("td.white")
+
+            gray_list = []
+            for i in range(0, len(gray), 3):
+                gray_list.append(
+                    [gray[i].get_text().replace(" ", ""), gray[i+1].get_text().replace(" ", ""), gray[i+2].get_text().replace(" ", "")])
+
+            white_list = []
+            for i in range(0, len(white), 3):
+                white_list.append([white[i].get_text(
+                ).replace(" ", ""), white[i+1].get_text().replace(" ", ""), white[i+2].get_text().replace(" ", "")])
+
+            rank_list = []
+            if len(gray_list) % 2 == 0:
+                for i in range(len(white_list)):
+                    rank_list.append(gray_list[i])
+                    rank_list.append(white_list[i])
+            else:
+                for i in range(len(white_list)):
+                    rank_list.append(gray_list[i])
+                    rank_list.append(white_list[i])
+                rank_list.append(gray_list[-1])
+
+            # print(rank_list)
+
+            embed = discord.Embed(title='길드랭킹', color=0x00ff56)
+    # 4, 49
+    # 0 <= 40 < 49
+            if 0 <= page*10 <= len(rank_list):
+                for i in range((page-1)*10, page*10):
+                    embed.add_field(
+                        name=f"{i+1}위", value=f"길드: {rank_list[i][0]},  길드장: {rank_list[i][1]},  레벨: {rank_list[i][2].replace('Lv.', '')}", inline=False)
+
+                await message.channel.send(embed=embed)
+
+            elif page*10 > len(rank_list) > (page-1)*10:
+                for i in range((page-1)*10, len(rank_list)):
+                    embed.add_field(
+                        name=f"{i+1}위", value=f"길드: {rank_list[i][0]},  길드장: {rank_list[i][1]},  레벨: {rank_list[i][2].replace('Lv.', '')}", inline=False)
+
+                await message.channel.send(embed=embed)
+            else:
+                await message.channel.send("페이지가 존재하지 않습니다.")
+
     elif message.content == "!명령어":
+
+        print(f"log.{message.content}")
+
         embed = discord.Embed(title='명령어', color=0x00ff56)
 
         embed.add_field(
@@ -328,13 +469,14 @@ async def on_message(message):
         embed.add_field(
             name='!규칙', value="규칙을 확인합니다.", inline=False)
         embed.add_field(
-            name='!파퀘 타이머', value="파티퀘스트 맵이 리셋되는 타이머를 작동시킵니다.", inline=False)
+            name='!타이머 <시간(분)> <메모>', value="타이머를 작동시킵니다.", inline=False)
         embed.add_field(
             name='!질문', value="자주 묻는 질문 목록을 확인합니다.", inline=False)
         embed.add_field(
             name='!명령어', value="사용할 수 있는 명령어 목록을 확인합니다.", inline=False)
 
         await message.channel.send(embed=embed)
+
 
 
 TOKEN = os.environ.get('BOT_TOKEN')
