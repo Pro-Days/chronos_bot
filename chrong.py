@@ -383,6 +383,8 @@ async def on_message(message):
                             name=f"{i+1}위", value=f"닉네임: {rank_list[i][0]},  레벨: {rank_list[i][1].replace('Lv.', '')},  점수: {rank_list[i][2]}점", inline=False)
 
                     await message.channel.send(embed=embed)
+                else:
+                    await message.channel.send("해당 페이지가 존재하지 않습니다.")
 
     elif str(message.content).startswith("!길드랭킹"):
 
@@ -445,7 +447,7 @@ async def on_message(message):
 
                 await message.channel.send(embed=embed)
             else:
-                await message.channel.send("페이지가 존재하지 않습니다.")
+                await message.channel.send("해당 페이지가 존재하지 않습니다.")
 
     elif message.content == "!명령어":
 
