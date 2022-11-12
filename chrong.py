@@ -474,6 +474,10 @@ async def on_message(message):
         embed.add_field(
             name='!타이머 <시간(분)> <메모>', value="타이머를 작동시킵니다.", inline=False)
         embed.add_field(
+            name='!랭킹 <직업> <페이지>', value="직업의 훈련장 랭킹을 확인합니다. 페이지는 1, 2만 가능합니다.", inline=False)
+        embed.add_field(
+            name='!길드랭킹 <페이지>', value="길드랭킹을 확인합니다.", inline=False)
+        embed.add_field(
             name='!질문', value="자주 묻는 질문 목록을 확인합니다.", inline=False)
         embed.add_field(
             name='!명령어', value="사용할 수 있는 명령어 목록을 확인합니다.", inline=False)
