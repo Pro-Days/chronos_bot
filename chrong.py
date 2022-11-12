@@ -213,7 +213,9 @@ async def on_message(message):
 
     elif message.content == "!서버정보":
 
-        print(f"log.{message.content}")
+        mention = message.author.name
+
+        print(f"{mention}  :  log.{message.content}")
 
         url = "https://mcapi.us/server/status?ip=chronos.skhidc.kr&port=25565"
         data = requests.get(url).json()
@@ -237,37 +239,49 @@ async def on_message(message):
 
     elif message.content == "!지도":
 
-        print(f"log.{message.content}")
+        mention = message.author.name
+
+        print(f"{mention}  :  log.{message.content}")
 
         await message.channel.send('http://chronosmap.skhidc.kr/')
 
     elif message.content == "!카페":
 
-        print(f"log.{message.content}")
+        mention = message.author.name
+
+        print(f"{mention}  :  log.{message.content}")
 
         await message.channel.send('https://cafe.naver.com/minepictures')
 
     elif message.content == "!디스코드":
 
-        print(f"log.{message.content}")
+        mention = message.author.name
+
+        print(f"{mention}  :  log.{message.content}")
 
         await message.channel.send('https://discord.gg/f6zYFyP3VP')
 
     elif message.content == "!후원":
 
-        print(f"log.{message.content}")
+        mention = message.author.name
+
+        print(f"{mention}  :  log.{message.content}")
 
         await message.channel.send('https://skhcs.com/chronos')
 
     elif message.content == "!리소스팩":
 
-        print(f"log.{message.content}")
+        mention = message.author.name
+
+        print(f"{mention}  :  log.{message.content}")
 
         await message.channel.send('기본적으로 서버 접속 시 자동으로 리소스팩이 적용됩니다.\n\n서버 접속 시 정상적으로 적용되시는 분들은 수동 적용할 필요가 없습니다.\n\n무선인터넷 등 인터넷 환경이 좋지 않을 경우 자동 접속 중 튕길 수 있습니다.\n서버에 접속 중 리소스팩을 정상적으로 받지 못해 튕기시는 분은\n\n" AppData\Roaming.minecraft\server-resource-packs " 경로의 파일을 모두 지운 후\n\n같은 경로에 아래 파일을 그대로 넣은 후 서버에 다시 접속하시면 됩니다.\nhttp://tx-cdn.skhidc.kr:1205/SUDRA/3200bb9bcf4d27b09d7554f41075c35b44055588\n파일명이나 확장자를 절대 변경하지 말고 그대로 server-resource-packs 폴더에 넣어주세요.')
 
     elif message.content == "!직업설명":
 
-        print(f"log.{message.content}")
+        mention = message.author.name
+
+        print(f"{mention}  :  log.{message.content}")
 
         embed = discord.Embed(title='직업설명', color=0x00ff56)
 
@@ -284,7 +298,9 @@ async def on_message(message):
 
     elif message.content == "!규칙":
 
-        print(f"log.{message.content}")
+        mention = message.author.name
+
+        print(f"{mention}  :  log.{message.content}")
 
         embed = discord.Embed(title='규칙', color=0x00ff56)
 
@@ -301,7 +317,9 @@ async def on_message(message):
 
     elif str(message.content).startswith("!타이머"):
 
-        print(f"log.{message.content}")
+        mention = message.author.name
+
+        print(f"{mention}  :  log.{message.content}")
 
         try:
             msg = str(message.content).split()
@@ -315,13 +333,17 @@ async def on_message(message):
 
     elif message.content == "!질문":
 
-        print(f"log.{message.content}")
+        mention = message.author.name
+
+        print(f"{mention}  :  log.{message.content}")
 
         await message.channel.send("자주 묻는 질문", view=SelectView())
 
     elif str(message.content).startswith("!랭킹"):
 
-        print(f"log.{message.content}")
+        mention = message.author.name
+
+        print(f"{mention}  :  log.{message.content}")
 
         msg = str(message.content).split()
         try:
@@ -388,7 +410,9 @@ async def on_message(message):
 
     elif str(message.content).startswith("!길드랭킹"):
 
-        print(f"log.{message.content}")
+        mention = message.author.name
+
+        print(f"{mention}  :  log.{message.content}")
 
         msg = str(message.content).split()
         try:
@@ -451,7 +475,9 @@ async def on_message(message):
 
     elif message.content == "!명령어":
 
-        print(f"log.{message.content}")
+        mention = message.author.name
+
+        print(f"{mention}  :  log.{message.content}")
 
         embed = discord.Embed(title='명령어', color=0x00ff56)
 
