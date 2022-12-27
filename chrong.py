@@ -1,11 +1,19 @@
-import asyncio
 import os
+import asyncio
+import time
 import requests
 import discord
 from bs4 import BeautifulSoup
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
+
+
+async def send_log(message):
+    mention = message.author.name
+
+    channel = client.get_channel(1057109819699494943)
+    await channel.send(f"{time.strftime('%Y-%m-%d %H:%M:%S')}   -   {mention}  :  {message.content}")
 
 
 async def timer(message, sleeping_time, note):
@@ -55,7 +63,7 @@ class Select(discord.ui.Select):
 
 [지도]
 '/지도' 명령어를 통해 16000 x 16000 크기의 맵을 한눈에 보면서 자신의 위치와 길드원들의 위치와 채널을 한눈에 볼 수 있습니다.
-#옵션에서 '지도위치 표시'토글을 통해 길드원에게 위치를 숨길 수도 있습니다.
+# 옵션에서 '지도위치 표시'토글을 통해 길드원에게 위치를 숨길 수도 있습니다.
 
 [BGM]
 '/음악 or /bgm' 명령어를 통해 들을 수 있습니다. BGM은 마을, 사냥터, 컨텐츠 장소에 따라 전부다 다른 음악이 재생되며, 저작권이 무료인 음악으로 방송을 하거나 유튜브에 업로드를 해도 문제가 되지 않습니다.""")
@@ -74,7 +82,7 @@ class Select(discord.ui.Select):
 
 크로노스 가디언즈 서버는 캐릭터를 5개까지 만들 수 있습니다.
 
-그에 따라 특정 플레이어의 랭킹 독식을 방지하고자 캐릭터 별 랭킹이 아닌 마인크래프트 계정기준으로 랭킹에 최고 기록 1개씩만 기록됩니다. 
+그에 따라 특정 플레이어의 랭킹 독식을 방지하고자 캐릭터 별 랭킹이 아닌 마인크래프트 계정기준으로 랭킹에 최고 기록 1개씩만 기록됩니다.
 """)
         elif self.values[0] == "캐시 아이템엔 무엇이 있나요?":
             await interaction.response.send_message("""기본적으로 서버에서 '/캐시충전' 명령어를 이용하여, 충전 웹사이트 링크를 볼 수 있습니다.
@@ -88,19 +96,19 @@ class Select(discord.ui.Select):
 (실제로 다른 유저들은 움직이고 있으나 자신에겐 멈춰있는 것으로만 보입니다.)
 
 
-로비를 제외한 RPG채널 등에서는 정상적으로 이용이 가능합니다. 
+로비를 제외한 RPG채널 등에서는 정상적으로 이용이 가능합니다.
 """)
         elif self.values[0] == "서버에 사용가능한 모드(클라이언트)가 무엇인가요?":
             await interaction.response.send_message("""크로노스 가디언즈 서버는 모든 모드를 허용하지 않습니다.
 '허용 모드': 옵티파인, 쉐이더, 미니맵, 한글채팅 등
 
-#패브릭 모드는 자동차단됩니다.""")
+# 패브릭 모드는 자동차단됩니다.""")
         elif self.values[0] == "리소스팩 다운이 안됩니다.":
             await interaction.response.send_message("""리소스팩 적용 실패 메시지가 뜰 때는 마인크래프트 폴더 내 server-resource-packs 폴더에 들어가신 후 안에 있는 파일들을 모두 삭제 후 로비 서버에서 '/리소스팩' 명령어를 입력 해 보세요.
 
-#주의: 많은 분들이 server-resource-packs 폴더가 아닌 그냥 resourcepacks 폴더의 파일을 지우십니다. 반드시 server-resource-packs 의 파일을 지워주세요!
+# 주의: 많은 분들이 server-resource-packs 폴더가 아닌 그냥 resourcepacks 폴더의 파일을 지우십니다. 반드시 server-resource-packs 의 파일을 지워주세요!
 
-카페의 자세한 설명 링크: https://cafe.naver.com/minepictures/83807 
+카페의 자세한 설명 링크: https://cafe.naver.com/minepictures/83807
 
 
 *사례: https://discord.com/channels/587152246433775640/1021243480347004948""")
@@ -119,7 +127,7 @@ class Select(discord.ui.Select):
 
 NPC가 수십 종류다 보니 '가나다 순서'로 정렬되어 표시됩니다.""")
         elif self.values[0] == "서버 재화엔 무엇이 있나요?":
-            await interaction.response.send_message("""'크로': 크로노스 가디언즈의 '기본 재화'입니다. 
+            await interaction.response.send_message("""'크로': 크로노스 가디언즈의 '기본 재화'입니다.
 
 '보석': 서버에 접속해있다면 30분마다 자동지급되며, 여러 컨텐츠에 필요로합니다.
 
@@ -190,11 +198,11 @@ Lv.71부터는 금화 5개를 소모하여 초기화할 수 있습니다.""")
 기존 디스코드 인증 방식과 동일하되 로비서버에서 명령어만 '/인증 {발급코드}' 대신
 '/인증취소 {발급코드}'를 입력하면 됩니다.
 
-#해당 인증취소의 경우 인증하여 연동된 디스코드 계정으로만 가능합니다.""")
+# 해당 인증취소의 경우 인증하여 연동된 디스코드 계정으로만 가능합니다.""")
 
 
 class SelectView(discord.ui.View):
-    def __init__(self, *, timeout=10):
+    def __init__(self, *, timeout=3600):
         super().__init__(timeout=timeout)
         self.add_item(Select())
 
@@ -203,6 +211,9 @@ class SelectView(discord.ui.View):
 async def on_ready():
 
     print('ready')
+
+    channel = client.get_channel(1057109819699494943)
+    await channel.send("-"*40 + f"\n\n{time.strftime('%Y-%m-%d %H:%M:%S')}   -   ready\n\n" + "-"*40)
 
 
 @client.event
@@ -213,75 +224,64 @@ async def on_message(message):
 
     elif message.content == "!서버정보":
 
-        mention = message.author.name
+        await send_log(message)
 
-        print(f"{mention}  :  log.{message.content}")
-
-        url = "https://mcapi.us/server/status?ip=chronos.skhidc.kr&port=25565"
+        url = "https://mcapi.xdefcon.com/server/chronos.skhidc.kr/full/json"
         data = requests.get(url).json()
-        del data["favicon"]
 
-        status = data["status"]
-        max_player = data["players"]["max"]
-        now_player = data["players"]["now"]
+        status = data["serverStatus"]
+        motd = data["motd"]["text"]
 
         embed = discord.Embed(title='크로노스 가디언즈 정보', color=0x00ff56)
 
-        if status == "success":
+        if status == "online":
             embed.add_field(name='서버 상태', value="접속 가능", inline=True)
+            max_player = data["maxplayers"]
+            now_player = data["players"]
+
+            embed.add_field(
+                name='플레이어', value=f"{now_player} / {max_player}", inline=True)
         else:
             embed.add_field(name='서버 상태', value="접속 불가능", inline=True)
 
         embed.add_field(
-            name='플레이어', value=f"{now_player} / {max_player}", inline=True)
+            name='메시지', value=motd, inline=False)
 
         await message.channel.send(embed=embed)
 
     elif message.content == "!지도":
 
-        mention = message.author.name
-
-        print(f"{mention}  :  log.{message.content}")
+        await send_log(message)
 
         await message.channel.send('http://chronosmap.skhidc.kr/')
 
     elif message.content == "!카페":
 
-        mention = message.author.name
-
-        print(f"{mention}  :  log.{message.content}")
+        await send_log(message)
 
         await message.channel.send('https://cafe.naver.com/minepictures')
 
     elif message.content == "!디스코드":
 
-        mention = message.author.name
-
-        print(f"{mention}  :  log.{message.content}")
+        await send_log(message)
 
         await message.channel.send('https://discord.gg/f6zYFyP3VP')
 
     elif message.content == "!후원":
 
-        mention = message.author.name
-
-        print(f"{mention}  :  log.{message.content}")
+        await send_log(message)
 
         await message.channel.send('https://skhcs.com/chronos')
 
     elif message.content == "!리소스팩":
 
-        mention = message.author.name
-
-        print(f"{mention}  :  log.{message.content}")
+        await send_log(message)
 
         await message.channel.send('기본적으로 서버 접속 시 자동으로 리소스팩이 적용됩니다.\n\n서버 접속 시 정상적으로 적용되시는 분들은 수동 적용할 필요가 없습니다.\n\n무선인터넷 등 인터넷 환경이 좋지 않을 경우 자동 접속 중 튕길 수 있습니다.\n서버에 접속 중 리소스팩을 정상적으로 받지 못해 튕기시는 분은\n\n" AppData\Roaming.minecraft\server-resource-packs " 경로의 파일을 모두 지운 후\n\n같은 경로에 아래 파일을 그대로 넣은 후 서버에 다시 접속하시면 됩니다.\nhttp://tx-cdn.skhidc.kr:1205/SUDRA/3200bb9bcf4d27b09d7554f41075c35b44055588\n파일명이나 확장자를 절대 변경하지 말고 그대로 server-resource-packs 폴더에 넣어주세요.')
 
     elif message.content == "!직업설명":
 
-        mention = message.author.name
-
-        print(f"{mention}  :  log.{message.content}")
+        await send_log(message)
 
         embed = discord.Embed(title='직업설명', color=0x00ff56)
 
@@ -298,9 +298,7 @@ async def on_message(message):
 
     elif message.content == "!규칙":
 
-        mention = message.author.name
-
-        print(f"{mention}  :  log.{message.content}")
+        await send_log(message)
 
         embed = discord.Embed(title='규칙', color=0x00ff56)
 
@@ -317,9 +315,7 @@ async def on_message(message):
 
     elif str(message.content).startswith("!타이머"):
 
-        mention = message.author.name
-
-        print(f"{mention}  :  log.{message.content}")
+        await send_log(message)
 
         try:
             msg = str(message.content).split()
@@ -333,17 +329,13 @@ async def on_message(message):
 
     elif message.content == "!질문":
 
-        mention = message.author.name
-
-        print(f"{mention}  :  log.{message.content}")
+        await send_log(message)
 
         await message.channel.send("자주 묻는 질문", view=SelectView())
 
     elif str(message.content).startswith("!랭킹"):
 
-        mention = message.author.name
-
-        print(f"{mention}  :  log.{message.content}")
+        await send_log(message)
 
         msg = str(message.content).split()
         try:
@@ -410,9 +402,7 @@ async def on_message(message):
 
     elif str(message.content).startswith("!길드랭킹"):
 
-        mention = message.author.name
-
-        print(f"{mention}  :  log.{message.content}")
+        await send_log(message)
 
         msg = str(message.content).split()
         try:
@@ -475,9 +465,7 @@ async def on_message(message):
 
     elif message.content == "!명령어":
 
-        mention = message.author.name
-
-        print(f"{mention}  :  log.{message.content}")
+        await send_log(message)
 
         embed = discord.Embed(title='명령어', color=0x00ff56)
 
@@ -509,7 +497,6 @@ async def on_message(message):
             name='!명령어', value="사용할 수 있는 명령어 목록을 확인합니다.", inline=False)
 
         await message.channel.send(embed=embed)
-
 
 
 TOKEN = os.environ.get('BOT_TOKEN')
