@@ -155,6 +155,14 @@ class SelectView(discord.ui.View):
         self.add_item(Select())
 
 
+def period():
+    while True:
+        time.sleep(1000)
+        print("1000s")
+thread1 = threading.Thread(target=period)
+thread1.start()
+
+
 @client.event
 async def on_ready():
 
