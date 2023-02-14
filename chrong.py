@@ -3,6 +3,7 @@ import asyncio
 import time
 import requests
 import discord
+import threading
 from bs4 import BeautifulSoup
 intents = discord.Intents.default()
 intents.message_content = True
